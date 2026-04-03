@@ -1,0 +1,15 @@
+//Ejecutar para docker
+docker-compose up --build
+docker-compose up backend
+docker-compose down
+
+//Ejecutar en backend
+npm install dotenv
+npm i -g  nodemon
+npm install prisma client
+npx prisma init
+npx prisma migrate
+
+//verificar que funciona
+nodemon src/index.js
+

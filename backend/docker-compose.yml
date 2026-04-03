@@ -4,8 +4,8 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${tareas_db}
-      MYSQL_USER: ${tarea_user}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
@@ -28,9 +28,12 @@ services:
     depends_on:
       - mysql
     env_file:
-      - .env.test
+      - .env
+    environment:
+      - DATABASE_URL=mysql://root:root@mysql:3306/tareas_db
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules # <-- ESTO ES CLAVE
 
 volumes:
   mysql_data:

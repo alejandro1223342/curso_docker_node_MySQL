@@ -9,6 +9,9 @@ npm i -g  nodemon
 npm install prisma client
 npx prisma init
 npx prisma migrate
+npm install axios
+node src/client/testApi.js
+npm install cors
 
 //verificar que funciona
 nodemon src/index.js

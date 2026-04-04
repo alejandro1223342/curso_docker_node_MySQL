@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', tareasRoutes); //aca se conecta con el archivo tareasRoutes.js
-app.use('/api/auth', authRoutes);//aca se conecta con el archivo authRoutes.js
+app.use('/api', authRoutes);//aca se conecta con el archivo authRoutes.js
 
 app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);

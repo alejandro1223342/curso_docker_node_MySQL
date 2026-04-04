@@ -17,7 +17,7 @@ async function registrarUsuario(data) {
     const user = await userRepository.crearUser({
         ...data, 
         password: hashedPassword, 
-        rol: data.rol || "usuario"
+        rol: data.rol 
     });
     return user;
 }
@@ -49,25 +49,9 @@ async function loginUsuario(data) {
 /**
  * Middleware para verificar el token JWT
  */
-function verificarToken(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).json({ message: 'Token no proporcionado' });
-    }
-    
-    const token = authHeader.split(' ')[1];
 
-    try {
-        const decoded = jwt.verify(token, secretKey);
-        req.user = decoded;
-        next();
-    } catch (error) {
-        return res.status(401).json({ message: 'Token inválido' });
-    }
-}
 
 module.exports = {
     registrarUsuario,
     loginUsuario,
-    verificarToken
 };

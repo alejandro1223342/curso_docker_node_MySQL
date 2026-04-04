@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tareaController = require('../controller/tareaController');
-const { verificarToken } = require('../services/authsServices');
+const { verificarToken } = require('../middleware/autHMiddleware');
 const { autorizarRoles } = require('../middleware/rolMiddleware');
 
 

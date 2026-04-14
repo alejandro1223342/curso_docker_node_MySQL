@@ -4,14 +4,21 @@ docker-compose up backend
 docker-compose down
 
 //Ejecutar en backend
+npm i express prisma @prisma/client 
+npm install @prisma/adapter-mariadb@^7.6.0
+npm install @scalar/express-api-reference@^0.9.6
+npm install axios
+npm install bcrypt
+npm install cors
 npm install dotenv
-npm i -g  nodemon
-npm install prisma client
+npm install jsonwebtoken
+npm install nodemon
+npm install prisma
+npm install --save-dev @types/node@^25.5.2
+
 npx prisma init
 npx prisma migrate
-npm install axios
-node src/client/testApi.js
-npm install cors
+
 
 //verificar que funciona
 nodemon src/index.js

@@ -1,0 +1,27 @@
+datasource db {
+  provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Usuario {
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+}
+
+model Libro {
+  id          Int    @id @default(autoincrement())
+  titulo      String
+  autor       String
+  categoria   String
+  descripcion String @db.Text
+}
+
+model TokenRevocado {
+  id        Int      @id @default(autoincrement())
+  token     String   @db.VarChar(512) @unique
+  createdAt DateTime @default(now())
+}

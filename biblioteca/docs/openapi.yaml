@@ -1,0 +1,214 @@
+openapi: 3.0.0
+info:
+  title: API de Biblioteca Digital
+  version: 1.0.0
+  description: API para la gestión de una biblioteca digital con autenticación JWT.
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor de desarrollo
+
+paths:
+  /api/register:
+    post:
+      summary: Registrar un nuevo usuario
+      tags:
+        - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '201':
+          description: Usuario registrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '400':
+          description: Error en el registro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /api/login:
+    post:
+      summary: Iniciar sesión
+      tags:
+        - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Credenciales inválidas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+
+  /api/logout:
+    post:
+      summary: Cerrar sesión (revocar token)
+      tags:
+        - Autenticación
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logout exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+        '401':
+          description: No autorizado
+
+  /api:
+    get:
+      summary: Ver todos los libros disponibles
+      tags:
+        - Libros
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista de libros obtenida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibroListResponse'
+        '401':
+          description: No autorizado
+
+    post:
+      summary: Agregar un nuevo libro
+      tags:
+        - Libros
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LibroRequest'
+      responses:
+        '201':
+          description: Libro agregado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LibroResponse'
+        '401':
+          description: No autorizado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    AuthRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: usuario@ejemplo.com
+        password:
+          type: string
+          example: password123
+
+    ApiResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Operación realizada con éxito
+
+    LoginResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+    Libro:
+      type: object
+      properties:
+        id:
+          type: integer
+        titulo:
+          type: string
+        autor:
+          type: string
+        categoria:
+          type: string
+        descripcion:
+          type: string
+
+    LibroRequest:
+      type: object
+      required:
+        - titulo
+        - autor
+        - categoria
+        - descripcion
+      properties:
+        titulo:
+          type: string
+          example: "Cien años de soledad"
+        autor:
+          type: string
+          example: "Gabriel García Márquez"
+        categoria:
+          type: string
+          example: "Realismo mágico"
+        descripcion:
+          type: string
+          example: "La historia de la familia Buendía en el pueblo de Macondo."
+
+    LibroResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        data:
+          $ref: '#/components/schemas/Libro'
+
+    LibroListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        count:
+          type: integer
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Libro'
